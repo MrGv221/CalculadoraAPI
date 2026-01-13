@@ -1,36 +1,53 @@
-﻿namespace CalculadoraAPI.Logic
+﻿using CalculadoraAPI.Models;
+using System.Security.Cryptography.X509Certificates;
+
+namespace CalculadoraAPI.Logic
 {
     public class CalculadoraLogic
     {
-        public string Suma(double n1, double n2)
-        {
-            double resultado = n1 + n2;
-            return $"{n1} + {n2} = {n1 + n2}";
-        }
+        private double N1, N2, Respuesta;
+        public string Op_Log, Op_Sym;
 
-        public string Resta(double n1, double n2)
+        public CalculadoraRes Calcular(CalculadoraRequest request, int Op)
         {
-            double resultado = n1 - n2;
-            return $"{n1} - {n2} = {n1 - n2}";
-        }
-
-        public string Multiplicacion(double n1, double n2)
-        {
-            double resultado = n1 * n2;
-            return $"{n1} * {n2} = {n1 * n2}";
-        }
-
-        public string Division(double n1, double n2)
-        {
-            if (n2 == 0)
+            N1 = request.N1;
+            N2 = request.N2;
+            switch (Op)
             {
-                return "No se puede dividir entre cero.";
+                case 1:
+                    Respuesta = N1 + N2;
+                    Op_Sym = "+";
+                    break;
+                case 2:
+                    Respuesta = N1 - N2;
+                    Op_Sym = "-";
+                    break;
+                case 3:
+                    Respuesta = N1 * N2;
+                    Op_Sym = "*";
+                    break;
+                case 4:
+                    if (N2 == 0)
+                    {
+                        return new CalculadoraRes
+                        {
+                            R = 0,
+                            Operacion = Op_Log
+                        };
+                    }
+                    Respuesta = N1 / N2;
+                    Op_Sym = "/";
+                    break;
+                default:
+                    break;
             }
-            else
+            Op_Log = $"{N1} {Op_Sym} {N2} = {Respuesta}";
+
+            return new CalculadoraRes
             {
-                double resultado = n1 / n2;
-                return $"{n1} / {n2} = {n1 / n2}";
-            }
+                R = Respuesta,
+                Operacion = Op_Log
+            };
         }
-    }
+    };
 }
