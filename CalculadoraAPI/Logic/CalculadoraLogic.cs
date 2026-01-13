@@ -32,15 +32,20 @@ namespace CalculadoraAPI.Logic
                         return new CalculadoraRes
                         {
                             R = 0,
-                            Operacion = Op_Log
+                            Operacion = "ERROR: No se puede dividir entre cero."
                         };
                     }
                     Respuesta = N1 / N2;
                     Op_Sym = "/";
                     break;
                 default:
-                    break;
+                    return new CalculadoraRes
+                    {
+                        R = 0,
+                        Operacion = "ERROR: Operación no válida."
+                    };
             }
+
             Op_Log = $"{N1} {Op_Sym} {N2} = {Respuesta}";
 
             return new CalculadoraRes
